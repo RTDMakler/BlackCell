@@ -25,25 +25,34 @@ public class RobAnim : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
+        if (!ObjObserve.isObseveItem)
         {
-            SetBoolTransition("Run", "Walk", "WalkR", "WalkL", "Stay");
-        }
-        else if (Input.GetKey(KeyCode.W))
-        {
-            SetBoolTransition( "Walk", "WalkR", "WalkL", "Stay","Run");
-        }
-        else if(Input.GetKey(KeyCode.D))
-        {   
-            SetBoolTransition("WalkR", "Walk", "WalkL", "Stay", "Run");
-        }
-        else if(Input.GetKey(KeyCode.A))
-        {
-            SetBoolTransition("WalkL", "Walk", "WalkR", "Stay", "Run");
+            animator.SetBool("isPause", false);
+            if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
+            {
+                SetBoolTransition("Run", "Walk", "WalkR", "WalkL", "Stay");
+            }
+            else if (Input.GetKey(KeyCode.W))
+            {
+                SetBoolTransition("Walk", "WalkR", "WalkL", "Stay", "Run");
+            }
+            else if (Input.GetKey(KeyCode.D))
+            {
+                SetBoolTransition("WalkR", "Walk", "WalkL", "Stay", "Run");
+            }
+            else if (Input.GetKey(KeyCode.A))
+            {
+                SetBoolTransition("WalkL", "Walk", "WalkR", "Stay", "Run");
+            }
+            else
+            {
+                SetBoolTransition("Stay", "Walk", "WalkL", "WalkR", "Run");
+            }
         }
         else
         {
-            SetBoolTransition("Stay", "Walk", "WalkL", "WalkR", "Run");
+            animator.SetBool("isPause", true);
         }
+       
     }
 }

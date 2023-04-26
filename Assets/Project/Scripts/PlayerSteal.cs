@@ -6,33 +6,75 @@ public class PlayerSteal : MonoBehaviour
 {
     [SerializeField] private Camera cam;
     private float rayDist;
+    private int capacity;
+    private int currentWeight;
+
+
+    int bag;
+    bool picklock;
+
     void Start()
     {
         rayDist = 3f;
+        bag = PlayerPrefs.GetInt("bag");
+        picklock = PlayerPrefs.GetInt("picklock") == 1 ? true : false ;
+        capacity = (bag + 1) * 200;
+        currentWeight = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.F))
+        if (!ObjObserve.isObseveItem)
         {
-            var camPos = cam.transform.position;
-            var playerPos = gameObject.transform.Find("CameraPoint").position;
-            RaycastHit [] hits;
-            Ray ray = new Ray(playerPos + (-camPos + playerPos) * 0.2f, (-camPos + playerPos));
-            Debug.DrawRay(playerPos + (-camPos + playerPos) * 0.2f, (-camPos + playerPos) , Color.green, 100f);
-
-            //Debug.DrawLine(playerPos + (-camPos + playerPos) * 0.2f, (-camPos + playerPos) * 1f + playerPos, Color.green, 100f);
-            hits = Physics.RaycastAll(ray, rayDist);
-            foreach (var hit in hits)
+            if (Input.GetKey(KeyCode.F))
             {
-                if(hit.transform.gameObject.CompareTag("treasure"))
+                var camPos = cam.transform.position;
+                var playerPos = gameObject.transform.Find("CameraPoint").position;
+                Ray ray = new Ray(playerPos + (-camPos + playerPos) * 0.2f, (-camPos + playerPos));
+                RaycastHit[] hits = Physics.RaycastAll(ray, rayDist);
+                GetTreasure(hits);
+            }
+        }
+        else if(Input.GetKey(KeyCode.Escape))
+        {
+            EndObjRotate();
+        }
+    }
+    void GetTreasure(RaycastHit[] hits)
+    {
+        foreach (var hit in hits)
+        {
+            if (hit.transform.gameObject.CompareTag("treasure"))
+            {
+                Debug.Log("Tr");
+                var treasure = hit.transform.gameObject.GetComponent<Treasure>();
+                if(treasure.Weight + capacity > currentWeight)
                 {
-                    Debug.Log("Tr");
-                    Destroy(hit.transform.gameObject);
-                    break;
+
+                    StartObjRotate();
+
+                    //net
                 }
+                else 
+                {
+                    //add object
+                    
+                }
+                hit.transform.gameObject.SetActive(false);
+                break;
             }
         }
     }
+    void StartObjRotate()
+    {
+        ObjObserve.isObseveItem = true;
+        FindObjectOfType<Cinemachine.CinemachineFreeLook>().enabled = false ;
+    }
+    void EndObjRotate()
+    {
+        ObjObserve.isObseveItem = false;
+        FindObjectOfType<Cinemachine.CinemachineFreeLook>().enabled = true;
+    }
+
 }
