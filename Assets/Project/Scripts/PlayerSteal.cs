@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
 
 public class PlayerSteal : MonoBehaviour
 {
@@ -8,6 +10,8 @@ public class PlayerSteal : MonoBehaviour
     private float rayDist;
     private int capacity;
     private int currentWeight;
+
+    [SerializeField] private GameObject image;
 
 
     int bag;
@@ -54,7 +58,7 @@ public class PlayerSteal : MonoBehaviour
 
                     StartObjRotate();
 
-                    //net
+                    
                 }
                 else 
                 {
@@ -70,11 +74,13 @@ public class PlayerSteal : MonoBehaviour
     {
         ObjObserve.isObseveItem = true;
         FindObjectOfType<Cinemachine.CinemachineFreeLook>().enabled = false ;
+        image.GetComponent<Image>().enabled = true;
     }
     void EndObjRotate()
     {
         ObjObserve.isObseveItem = false;
         FindObjectOfType<Cinemachine.CinemachineFreeLook>().enabled = true;
+        image.GetComponent<Image>().enabled = false;
     }
 
 }
