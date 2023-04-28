@@ -28,35 +28,54 @@ public class RobAnim : MonoBehaviour
     {
         if (!ObjObserve.isObseveItem)
         {
-            animator.SetBool("isPause", false);
-            if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
+            if (animator.GetBool("Run") == false
+                && animator.GetBool("Walk") == false
+                 && animator.GetBool("Stay") == false
+                  && animator.GetBool("WalkR") == false
+                   && animator.GetBool("WalkL") == false
+                    && animator.GetBool("WalkBack") == false
+                    )
             {
-                SetBoolTransition("Run", "Walk", "WalkR", "WalkL", "Stay", "WalkBack");
+                animator.SetBool("Stay", false);
             }
-            else if (Input.GetKey(KeyCode.W))
+            if(animator.GetBool("isPause"))
             {
-                SetBoolTransition("Walk", "WalkR", "WalkL", "Stay", "Run", "WalkBack");
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                SetBoolTransition("WalkBack", "WalkL", "Walk", "WalkR", "Stay", "Run");
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                SetBoolTransition("WalkR", "Walk", "WalkL", "Stay", "Run", "WalkBack");
-            }
-            else if (Input.GetKey(KeyCode.A))
-            {
-                SetBoolTransition("WalkL", "Walk", "WalkR", "Stay", "Run", "WalkBack");
+                animator.SetBool("isPause", false);
+                SetBoolTransition("Stay", "Walk", "WalkL", "WalkR", "Run", "WalkBack");
             }
             else
             {
-                SetBoolTransition("Stay", "Walk", "WalkL", "WalkR", "Run", "WalkBack");
+                if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
+                {
+                    SetBoolTransition("Run", "Walk", "WalkR", "WalkL", "Stay", "WalkBack");
+                }
+                else if (Input.GetKey(KeyCode.W))
+                {
+                    SetBoolTransition("Walk", "WalkR", "WalkL", "Stay", "Run", "WalkBack");
+                }
+                else if (Input.GetKey(KeyCode.S))
+                {
+                    SetBoolTransition("WalkBack", "WalkL", "Walk", "WalkR", "Stay", "Run");
+                }
+                else if (Input.GetKey(KeyCode.D))
+                {
+                    SetBoolTransition("WalkR", "Walk", "WalkL", "Stay", "Run", "WalkBack");
+                }
+                else if (Input.GetKey(KeyCode.A))
+                {
+                    SetBoolTransition("WalkL", "Walk", "WalkR", "Stay", "Run", "WalkBack");
+                }
+                else
+                {
+                    SetBoolTransition("Stay", "Walk", "WalkL", "WalkR", "Run", "WalkBack");
+                }
             }
         }
         else
         {
             animator.SetBool("isPause", true);
+            SetBoolTransition("Stay", "Walk", "WalkL", "WalkR", "Run", "WalkBack");
+            animator.SetBool("Stay", false);
         }
        
     }

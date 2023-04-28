@@ -13,4 +13,8 @@ public class MoveBTWScenes : MonoBehaviour
     {
         SceneManager.LoadScene("Shop");
     }
+    public void Play()
+    {
+        SceneManager.LoadScene("Test");
+    }
 }

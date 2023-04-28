@@ -9,7 +9,7 @@ public class OutlineRay : MonoBehaviour
     private Outline lastOutline;
     void Start()
     {
-        foreach(var treasure in GameObject.FindGameObjectsWithTag("treasure"))
+        foreach (var treasure in GameObject.FindGameObjectsWithTag("treasure"))
         {
             treasure.AddComponent<Outline>();
             treasure.GetComponent<Outline>().enabled = false;
@@ -19,16 +19,27 @@ public class OutlineRay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GameObject[] tr = GameObject.FindGameObjectsWithTag("treasure");
-        foreach(var t in tr)
+        if (!ObjObserve.isObseveItem)
         {
-            if ((t.gameObject.transform.position - this.transform.position).magnitude < 3)
+            GameObject[] treasures = GameObject.FindGameObjectsWithTag("treasure");
+            foreach (var treasure in treasures)
             {
-                t.GetComponent<Outline>().enabled = true;
+                if ((treasure.gameObject.transform.position - this.transform.position).magnitude < 3)
+                {
+                    treasure.GetComponent<Outline>().enabled = true;
+                }
+                else
+                {
+                    treasure.GetComponent<Outline>().enabled = false;
+                }
             }
-            else 
+        }
+        else
+        {
+            GameObject[] treasures = GameObject.FindGameObjectsWithTag("treasure");
+            foreach (var treasure in treasures)
             {
-                t.GetComponent<Outline>().enabled = false;
+                treasure.GetComponent<Outline>().enabled = false;
             }
         }
     }
