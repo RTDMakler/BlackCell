@@ -10,6 +10,7 @@ public class UIGame : MonoBehaviour
     public TextMeshProUGUI cost;
     public TextMeshProUGUI weight;
     public TextMeshProUGUI timeLast;
+    private int localTime;
 
     [SerializeField] TextMeshProUGUI earn;
     void Start()
@@ -17,13 +18,14 @@ public class UIGame : MonoBehaviour
         cost.text = "0";
         weight.text = "0";
         timeLast.text = "0";
+        localTime = (int)Time.time;
     }
 
     // Update is called once per frame
     void Update()
     {
-        timeLast.text = ((int)Time.time).ToString();
-        if(Time.time>=60)
+        timeLast.text = ((int)Time.time - localTime).ToString();
+        if((int)Time.time - localTime >= 60)
         {
             ObjObserve.isObseveItem = true;
             gameObject.transform.Find("Finish").transform.gameObject.SetActive(true);

@@ -6,11 +6,12 @@ using UnityEditor;
 public class RobAnim : MonoBehaviour
     
 {
-    // Start is called before the first frame update
     Animator animator;
+    bool flag;
     void Start()
     {
         animator = GetComponent<Animator>();
+        flag = true;
     }
 
     void SetBoolTransition(string a, string b, string c, string d, string e, string f)
@@ -28,24 +29,9 @@ public class RobAnim : MonoBehaviour
     {
         if (!ObjObserve.isObseveItem)
         {
-            if (animator.GetBool("Run") == false
-                && animator.GetBool("Walk") == false
-                 && animator.GetBool("Stay") == false
-                  && animator.GetBool("WalkR") == false
-                   && animator.GetBool("WalkL") == false
-                    && animator.GetBool("WalkBack") == false
-                    )
-            {
-                animator.SetBool("Stay", false);
-            }
-            if(animator.GetBool("isPause"))
-            {
-                animator.SetBool("isPause", false);
-                SetBoolTransition("Stay", "Walk", "WalkL", "WalkR", "Run", "WalkBack");
-            }
-            else
-            {
-                if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
+            flag = true;
+
+            if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.LeftShift))
                 {
                     SetBoolTransition("Run", "Walk", "WalkR", "WalkL", "Stay", "WalkBack");
                 }
@@ -67,15 +53,16 @@ public class RobAnim : MonoBehaviour
                 }
                 else
                 {
-                    SetBoolTransition("Stay", "Walk", "WalkL", "WalkR", "Run", "WalkBack");
-                }
+                    SetBoolTransition("Stay", "Walk", "WalkL", "WalkR", "Run", "WalkBack");   
             }
         }
         else
-        {
-            animator.SetBool("isPause", true);
-            SetBoolTransition("Stay", "Walk", "WalkL", "WalkR", "Run", "WalkBack");
-            animator.SetBool("Stay", false);
+        { 
+            if(flag)
+            {
+                flag = false;
+                SetBoolTransition("Stay", "Walk", "WalkL", "WalkR", "Run", "WalkBack");
+            }
         }
        
     }
